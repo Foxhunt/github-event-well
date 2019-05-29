@@ -1,15 +1,13 @@
-import { useState, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 
 const Index = () => {
     const matterContainer = useRef()
 
     useEffect(() => {
-        if(matterContainer.current){
-            import("../src").then(module => {
-                module.default(matterContainer.current)
-            })
-        }
-    }, [])
+        import("../src").then(module => {
+            module.default(matterContainer.current)
+        })
+    }, [matterContainer.current])
 
     return <div ref={ matterContainer }/>
 }

@@ -1,4 +1,4 @@
-import { Bodies, Body, Bounds, Engine, Events, Render, Runner, World } from "matter-js"
+import { Bodies, Engine, Events, Render, Runner, World } from "matter-js"
 
 export default container => {
     // create an engine
@@ -17,7 +17,7 @@ export default container => {
         engine: engine,
         options: {
             width: container.clientWidth,
-            height: 1000,
+            height: 900,
             hasBounds: true
         }
     })
@@ -53,7 +53,7 @@ export default container => {
         const box = Bodies.rectangle(xPos, ground.position.y - 30, 20, 20, {
             frictionAir: 0.004,
             force: { x, y },
-            density: 0.05,
+            density: 0.1,
             label: "box",
             collisionFilter: {
                 category: 2,
@@ -62,13 +62,7 @@ export default container => {
         })
 
         World.add(engine.world, box)
-    }, 300)
-
-    Events.on(runner, "afterTick", () => {
-        const translate = {x : 0, y : -0.1 * runner.delta}
-        Bounds.translate(render.bounds, translate)
-        Body.translate(ground, translate)
-    })
+    }, 100)
 
     Events.on(engine, "collisionStart", ({ pairs }) => {
         pairs.forEach(({ bodyA, bodyB }) => {

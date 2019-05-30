@@ -1,8 +1,8 @@
-import { Engine, Events, Render, World, Bodies } from "matter-js"
+import { Engine, Events, Render, World, Bodies, Bounds } from "matter-js"
 
 export default container => {
     // create an engine
-    const engine = Engine.create()
+    const engine = Engine.create({})
     
     // create a renderer
     const render = Render.create({
@@ -14,12 +14,14 @@ export default container => {
         }
     })
 
-    const ground = Bodies.rectangle(400, 670, 1600, 30, {
+    engine.world.gravity = { x: 0, y: 0 }
+
+    const ground = Bodies.rectangle(400, 0, 800, 30, {
         isStatic: true,
         label: "ground"
     })
 
-    World.add(engine.world, ground)
+    // World.add(engine.world, ground)
 
     // run the engine
     Engine.run(engine)
@@ -37,16 +39,21 @@ export default container => {
 
         const torque = Math.random() * spin - spin / 2
 
-        const box = Bodies.rectangle(400, 550, 20, 20, {
+        const xPos = 200 + 400 * Math.random() 
+
+        const box = Bodies.rectangle(xPos, 600, 20, 20, {
             force: { x, y },
-            torque: torque,
-            density: 0.04,
+            density: 0.1,
             label: "box"
         })
 
         World.add(engine.world, box)
-    }, 300)
 
+        const translate = {x : 0, y : -100}
+        Bounds.translate(render.bounds, translate)
+    }, 30)
+
+    /*
     Events.on(engine, "collisionStart", ({ pairs }) => {
         pairs.forEach(({ bodyA, bodyB }) => {
             if(bodyA.label === "ground" || bodyB.label === "ground"){
@@ -58,4 +65,5 @@ export default container => {
             }
         })
     })
+    */
 }

@@ -50,10 +50,10 @@ export default container => {
         const spread = 10
         const xPos = width / spread + (width / spread) * (spread - 2) * Math.random() 
 
-        const box = Bodies.rectangle(xPos, ground.position.y - 30, 20, 20, {
+        const box = Bodies.circle(xPos, ground.position.y - 30, 11, {
             frictionAir: 0.004,
             force: { x, y },
-            density: 0.1,
+            density: 0.05 * Math.random() + 0.05,
             label: "box",
             collisionFilter: {
                 category: 2,

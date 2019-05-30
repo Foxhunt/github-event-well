@@ -28,7 +28,7 @@ export default container => {
     const width = render.canvas.width
     const height = render.canvas.height
 
-    const ground = Bodies.rectangle(width / 2, height - 30, width * 2, 1, {
+    const ground = Bodies.rectangle(width / 2, height + 30, width * 2, 1, {
         isStatic: true,
         label: "ground",
         collisionFilter: {

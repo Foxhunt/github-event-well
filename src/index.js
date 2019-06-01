@@ -1,4 +1,14 @@
-import { Bodies, Engine, Events, Render, Runner, World } from "matter-js"
+import {
+    Bodies,
+    Body,
+    Engine,
+    Events,
+    MouseConstraint,
+    Render,
+    Runner,
+    World,
+    Query
+} from "matter-js"
 
 export default container => {
     // create an engine
@@ -17,7 +27,7 @@ export default container => {
         engine: engine,
         options: {
             width: container.clientWidth,
-            height: 900,
+            height: 800,
             hasBounds: true
         }
     })
@@ -37,23 +47,41 @@ export default container => {
         }
     })
 
-    World.add(engine.world, ground)
+    const wallLeft = Bodies.rectangle(0, height, 1, height * 2, {
+        isStatic: true,
+        label: "ground",
+        collisionFilter: {
+            category: 1,
+            mask: 2
+        }
+    })
 
-    setInterval(() => {
-        const fan = 3
-        const speed = 0.7
+    const wallRight = Bodies.rectangle(width, height, 1, height * 2, {
+        isStatic: true,
+        label: "ground",
+        collisionFilter: {
+            category: 1,
+            mask: 2
+        }
+    })
+
+    World.add(engine.world, [ground, wallLeft, wallRight])
+
+    function spawnBody() {
+        const fan = 4
+        const speed = 0.5
 
         const angle = (180 + fan / 2 - Math.random() * fan) * Math.PI / 180
         const x = Math.sin(angle) * speed
         const y = Math.cos(angle) * speed
 
-        const spread = 10
+        const spread = 20
         const xPos = width / spread + (width / spread) * (spread - 2) * Math.random() 
 
         const box = Bodies.circle(xPos, ground.position.y - 30, 11, {
             frictionAir: 0.004,
             force: { x, y },
-            density: 0.05 * Math.random() + 0.05,
+            density: 0.03 * Math.random() + 0.07,
             label: "box",
             collisionFilter: {
                 category: 2,
@@ -62,7 +90,33 @@ export default container => {
         })
 
         World.add(engine.world, box)
-    }, 100)
+    }
+
+    setInterval(spawnBody, 100)
+    
+    const mouseConstraint = MouseConstraint.create(engine, {
+        element: container,
+        collisionFilter: {
+            category: 3,
+            mask: 0
+        }
+    })
+
+    World.add(engine.world, mouseConstraint)
+
+    Events.on(mouseConstraint, "mousedown", ({mouse}) => {
+        const body = Query.point(engine.world.bodies, mouse.mousedownPosition)[0]
+        
+        const index = engine.world.bodies.indexOf(body)
+
+        const remove = engine.world.bodies.concat()
+        remove.splice(index, 1)
+
+        if(body){
+            World.remove(engine.world, remove)
+            Body.setStatic(body, !body.isStatic)
+        }
+    })
 
     Events.on(engine, "collisionStart", ({ pairs }) => {
         pairs.forEach(({ bodyA, bodyB }) => {

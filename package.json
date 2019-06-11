@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Foxhunt/GitHubCodeSource#readme",
   "dependencies": {
+    "downloadjs": "^1.4.7",
     "matter-js": "^0.14.2",
     "next": "^8.1.0",
     "octicons": "^8.5.0",

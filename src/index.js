@@ -10,6 +10,8 @@ import {
     Query
 } from "matter-js"
 
+import Recorder from "./recorder"
+
 export default container => {
     // create an engine
     const engine = Engine.create()
@@ -104,29 +106,36 @@ export default container => {
 
     World.add(engine.world, mouseConstraint)
 
-    Events.on(mouseConstraint, "mousedown", ({mouse}) => {
-        const body = Query.point(engine.world.bodies, mouse.mousedownPosition)[0]
-        
-        const index = engine.world.bodies.indexOf(body)
-
-        const remove = engine.world.bodies.concat()
-        remove.splice(index, 1)
-
-        if(body){
+    const onEventClicked = ({ mouse }) => {
+        const body = Query.point(engine.world.bodies, mouse.mousedownPosition)[0];
+        const index = engine.world.bodies.indexOf(body);
+        const remove = engine.world.bodies.concat();
+        remove.splice(index, 1);
+        if (body) {
             World.remove(engine.world, remove)
             Body.setStatic(body, !body.isStatic)
         }
-    })
+    }
 
-    Events.on(engine, "collisionStart", ({ pairs }) => {
-        pairs.forEach(({ bodyA, bodyB }) => {
-            if(bodyA.label === "ground" || bodyB.label === "ground"){
-                if(bodyA.label === "box") {
+    Events.on(mouseConstraint, "mousedown", onEventClicked)
+
+    const onEventGroundCollision = ({ pairs }) => {
+        for(const { bodyA, bodyB } of pairs){
+            if (bodyA.label === "ground" || bodyB.label === "ground") {
+                if (bodyA.label === "box") {
                     World.remove(engine.world, bodyA, true)
+                    console.log("removed!")
                 } else {
                     World.remove(engine.world, bodyB, true)
+                    console.log("removed!")
                 }
             }
-        })
-    })
+        }
+    }
+
+    Events.on(engine, "collisionStart", onEventGroundCollision)
+    
+    const recorder = new Recorder(render.canvas)
+
+    render.canvas.addEventListener("pointerdown", () => recorder.state === "recording" ? recorder.stop() : recorder.start())
 }

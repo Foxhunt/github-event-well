@@ -47,7 +47,7 @@ export default container => {
         }
     })
 
-    const wallLeft = Bodies.rectangle(0, height, 1, height * 2, {
+    const wallLeft = Bodies.rectangle(0 - 30, height, 1, height * 2, {
         isStatic: true,
         label: "ground",
         collisionFilter: {
@@ -56,7 +56,7 @@ export default container => {
         }
     })
 
-    const wallRight = Bodies.rectangle(width, height, 1, height * 2, {
+    const wallRight = Bodies.rectangle(width + 30, height, 1, height * 2, {
         isStatic: true,
         label: "ground",
         collisionFilter: {
@@ -68,8 +68,8 @@ export default container => {
     World.add(engine.world, [ground, wallLeft, wallRight])
 
     function spawnBody() {
-        const fan = 4
-        const speed = 0.5
+        const fan = 10
+        const speed = 2 + Math.random()
 
         const angle = (180 + fan / 2 - Math.random() * fan) * Math.PI / 180
         const x = Math.sin(angle) * speed
@@ -79,9 +79,9 @@ export default container => {
         const xPos = width / spread + (width / spread) * (spread - 2) * Math.random() 
 
         const box = Bodies.circle(xPos, ground.position.y - 30, 11, {
-            frictionAir: 0.004,
+            frictionAir: 0,
             force: { x, y },
-            density: 0.03 * Math.random() + 0.07,
+            density: 1,
             label: "box",
             collisionFilter: {
                 category: 2,
@@ -92,7 +92,7 @@ export default container => {
         World.add(engine.world, box)
     }
 
-    setInterval(spawnBody, 100)
+    setInterval(spawnBody, 50)
     
     const mouseConstraint = MouseConstraint.create(engine, {
         element: container,

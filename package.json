@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "now-build": "next build"
   },
   "repository": {
     "type": "git",

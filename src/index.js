@@ -12,6 +12,8 @@ import {
 
 import Recorder from "./recorder"
 
+const GITHUB_EVENTS_URL = "https://api.github.com/events"
+
 export default container => {
     // create an engine
     const engine = Engine.create()
@@ -138,4 +140,17 @@ export default container => {
     const recorder = new Recorder(render.canvas)
 
     render.canvas.addEventListener("pointerdown", () => recorder.state === "recording" ? recorder.stop() : recorder.start())
+
+    const events = []
+
+    async function fetchEvents() {
+        const respone = await fetch(GITHUB_EVENTS_URL)
+
+        const data = await respone.json()
+
+        events.push(...data)
+    }
+
+    fetchEvents()
+    setInterval(fetchEvents, 10 * 1000)
 }

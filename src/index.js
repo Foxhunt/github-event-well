@@ -10,8 +10,6 @@ import {
     Query
 } from "matter-js"
 
-import Recorder from "./recorder"
-
 const GITHUB_EVENTS_URL = "https://api.github.com/events"
 
 export default container => {
@@ -136,10 +134,6 @@ export default container => {
     }
 
     Events.on(engine, "collisionStart", onEventGroundCollision)
-    
-    const recorder = new Recorder(render.canvas)
-
-    render.canvas.addEventListener("pointerdown", () => recorder.state === "recording" ? recorder.stop() : recorder.start())
 
     const events = []
 

@@ -30,7 +30,7 @@ export default container => {
         engine: engine,
         options: {
             width: container.clientWidth,
-            height: 800,
+            height: container.clientHeight,
             hasBounds: true,
             wireframes: false,
         }
@@ -42,7 +42,7 @@ export default container => {
     const width = render.canvas.width
     const height = render.canvas.height
 
-    const ground = Bodies.rectangle(width / 2, height + 30, width * 2, 1, {
+    const ground = Bodies.rectangle(width / 2, height + 60, width * 2, 1, {
         isStatic: true,
         label: "ground",
         collisionFilter: {

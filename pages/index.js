@@ -9,7 +9,12 @@ const Index = () => {
         })
     }, [matterContainer.current])
 
-    return <div ref={ matterContainer }/>
+    return <div
+    style={{
+        width: "calc(100vw - 16px)",
+        height: "calc(100vh - 16px)"
+    }}
+    ref={ matterContainer }/>
 }
 
 export default Index

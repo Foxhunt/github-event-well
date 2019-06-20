@@ -11,6 +11,7 @@ import {
 } from "matter-js"
 
 const GITHUB_EVENTS_URL = "https://api.github.com/events"
+const EVENT_FETCH_INTERVALL_TIME = 10 * 1000
 
 export default container => {
     // create an engine
@@ -94,7 +95,7 @@ export default container => {
         World.add(engine.world, box)
     }
 
-    setInterval(spawnBody, 50)
+    setInterval(spawnBody, EVENT_FETCH_INTERVALL_TIME / 30)
     
     const mouseConstraint = MouseConstraint.create(engine, {
         element: container,
@@ -146,5 +147,5 @@ export default container => {
     }
 
     fetchEvents()
-    setInterval(fetchEvents, 10 * 1000)
+    setInterval(fetchEvents, EVENT_FETCH_INTERVALL_TIME)
 }

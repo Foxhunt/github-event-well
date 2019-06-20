@@ -2,6 +2,18 @@
     "version": 2,
     "name": "GitHubCodeSource",
     "builds": [
-        { "src": "package.json", "use": "@now/next" }
+        {
+            "src": "package.json",
+            "use": "@now/next"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/$1",
+            "headers": {
+                "cache-control": "max-age=3600, s-maxage=432000"
+            }
+        }
     ]
 }

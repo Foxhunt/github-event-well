@@ -11,7 +11,7 @@ import {
 } from "matter-js"
 
 const GITHUB_EVENTS_URL = "https://api.github.com/events"
-const EVENT_FETCH_INTERVALL_TIME = 10 * 1000
+const EVENT_FETCH_INTERVALL_TIME = 60 * 1000
 
 export default container => {
     // create an engine

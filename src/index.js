@@ -11,8 +11,12 @@ import {
 } from "matter-js"
 
 import getTexture from "./getTexture"
+
 const GITHUB_EVENTS_URL = "https://api.github.com/events"
 const EVENT_FETCH_INTERVALL_TIME = 60 * 1000
+const events = []
+
+let repo = ""
 
 export default container => {
     // create an engine
@@ -83,6 +87,8 @@ export default container => {
         const spread = 20
         const xPos = width / spread + (width / spread) * (spread - 2) * Math.random() 
 
+        const event = events.shift()
+
         const box = Bodies.circle(xPos, ground.position.y - 30, 11, {
             torque: Math.random() * 6 - 3,
             frictionAir: 0,
@@ -95,10 +101,12 @@ export default container => {
             },
             render: {
                 sprite: {
-                    texture: getTexture(events.shift())
+                    texture: getTexture(event)
                 }
             }
         })
+
+        box.event = event
 
         World.add(engine.world, box)
     }
@@ -115,20 +123,7 @@ export default container => {
 
     World.add(engine.world, mouseConstraint)
 
-    const onEventClicked = ({ mouse }) => {
-        const body = Query.point(engine.world.bodies, mouse.mousedownPosition)[0];
-        const index = engine.world.bodies.indexOf(body);
-        const remove = engine.world.bodies.concat();
-        remove.splice(index, 1);
-        if (body) {
-            World.remove(engine.world, remove)
-            Body.setStatic(body, !body.isStatic)
-        }
-    }
-
-    Events.on(mouseConstraint, "mousedown", onEventClicked)
-
-    const onEventGroundCollision = ({ pairs }) => {
+    function onEventGroundCollision({ pairs }) {
         for(const { bodyA, bodyB } of pairs){
             if (bodyA.label === "ground" || bodyB.label === "ground") {
                 if (bodyA.label === "box") {
@@ -144,10 +139,26 @@ export default container => {
 
     Events.on(engine, "collisionStart", onEventGroundCollision)
 
-    const events = []
+    function onEventClicked({ mouse }) {
+        const body = Query.point(engine.world.bodies, mouse.mousedownPosition)[0];
+        const index = engine.world.bodies.indexOf(body);
+        const remove = engine.world.bodies.concat();
+        remove.splice(index, 1);
+        if (body) {
+            World.remove(engine.world, remove)
+            Body.setStatic(body, !body.isStatic)
+            if(body.isStatic){
+                repo = body.event.repo.url + "/events"
+            } else {
+                repo = ""
+            }
+        }
+    }
+
+    Events.on(mouseConstraint, "mousedown", onEventClicked)
 
     async function fetchEvents() {
-        const respone = await fetch(GITHUB_EVENTS_URL)
+        const respone = await fetch(repo ? repo : GITHUB_EVENTS_URL)
 
         const data = await respone.json()
 

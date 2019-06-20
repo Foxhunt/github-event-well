@@ -75,6 +75,32 @@ export default container => {
     })
 
     World.add(engine.world, [ground, wallLeft, wallRight])
+    
+    const mouseConstraint = MouseConstraint.create(engine, {
+        element: container,
+        collisionFilter: {
+            category: 3,
+            mask: 0
+        }
+    })
+
+    World.add(engine.world, mouseConstraint)
+
+    Events.on(engine, "collisionStart", onEventGroundCollision)
+
+    Events.on(mouseConstraint, "mousedown", onEventClicked)
+
+    fetchEvents()
+    setInterval(fetchEvents, EVENT_FETCH_INTERVALL_TIME)
+    setInterval(spawnBody, EVENT_FETCH_INTERVALL_TIME / 30)
+
+    async function fetchEvents() {
+        const respone = await fetch(repo ? repo : GITHUB_EVENTS_URL)
+
+        const data = await respone.json()
+
+        events.push(...data)
+    }
 
     function spawnBody() {
         const fan = 10
@@ -111,18 +137,6 @@ export default container => {
         World.add(engine.world, box)
     }
 
-    setInterval(spawnBody, EVENT_FETCH_INTERVALL_TIME / 30)
-    
-    const mouseConstraint = MouseConstraint.create(engine, {
-        element: container,
-        collisionFilter: {
-            category: 3,
-            mask: 0
-        }
-    })
-
-    World.add(engine.world, mouseConstraint)
-
     function onEventGroundCollision({ pairs }) {
         for(const { bodyA, bodyB } of pairs){
             if (bodyA.label === "ground" || bodyB.label === "ground") {
@@ -136,8 +150,6 @@ export default container => {
             }
         }
     }
-
-    Events.on(engine, "collisionStart", onEventGroundCollision)
 
     function onEventClicked({ mouse }) {
         const body = Query.point(engine.world.bodies, mouse.mousedownPosition)[0];
@@ -154,18 +166,5 @@ export default container => {
             }
         }
     }
-
-    Events.on(mouseConstraint, "mousedown", onEventClicked)
-
-    async function fetchEvents() {
-        const respone = await fetch(repo ? repo : GITHUB_EVENTS_URL)
-
-        const data = await respone.json()
-
-        events.push(...data)
-    }
-
-    fetchEvents()
-    setInterval(fetchEvents, EVENT_FETCH_INTERVALL_TIME)
 }
  

@@ -10,6 +10,7 @@ import {
     Query
 } from "matter-js"
 
+import getTexture from "./getTexture"
 const GITHUB_EVENTS_URL = "https://api.github.com/events"
 const EVENT_FETCH_INTERVALL_TIME = 60 * 1000
 
@@ -155,29 +156,5 @@ export default container => {
 
     fetchEvents()
     setInterval(fetchEvents, EVENT_FETCH_INTERVALL_TIME)
-
-    function getTexture(event) {
-        console.log(event.type)
-        switch (event.type) {
-            case "PullRequestEvent":
-                return "./static/git-pull-request.png"
-            case "PushEvent":
-                return "./static/repo-push.png"
-            case "CreateEvent":
-                return "./static/repo.png"
-            case "ForkEvent":
-                return "./static/repo-forked.png"
-            case "DeleteEvent":
-                return "./static/trashcan.png"
-            case "PullRequestReviewCommentEvent":
-            case "IssueCommentEvent":
-                return "./static/comment.png"
-            case "WatchEvent":
-                return "./static/eye.png"
-            case "IssuesEvent":
-                return "./static/bug.png"
-            default:
-                return ""
-        }
-    }
 }
+ 

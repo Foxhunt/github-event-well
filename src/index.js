@@ -31,7 +31,8 @@ export default container => {
         options: {
             width: container.clientWidth,
             height: 800,
-            hasBounds: true
+            hasBounds: true,
+            wireframes: false,
         }
     })
 
@@ -82,6 +83,7 @@ export default container => {
         const xPos = width / spread + (width / spread) * (spread - 2) * Math.random() 
 
         const box = Bodies.circle(xPos, ground.position.y - 30, 11, {
+            torque: Math.random() * 6 - 3,
             frictionAir: 0,
             force: { x, y },
             density: 1,
@@ -89,6 +91,11 @@ export default container => {
             collisionFilter: {
                 category: 2,
                 mask: 1
+            },
+            render: {
+                sprite: {
+                    texture: getTexture(events.shift())
+                }
             }
         })
 
@@ -148,4 +155,29 @@ export default container => {
 
     fetchEvents()
     setInterval(fetchEvents, EVENT_FETCH_INTERVALL_TIME)
+
+    function getTexture(event) {
+        console.log(event.type)
+        switch (event.type) {
+            case "PullRequestEvent":
+                return "./static/git-pull-request.png"
+            case "PushEvent":
+                return "./static/repo-push.png"
+            case "CreateEvent":
+                return "./static/repo.png"
+            case "ForkEvent":
+                return "./static/repo-forked.png"
+            case "DeleteEvent":
+                return "./static/trashcan.png"
+            case "PullRequestReviewCommentEvent":
+            case "IssueCommentEvent":
+                return "./static/comment.png"
+            case "WatchEvent":
+                return "./static/eye.png"
+            case "IssuesEvent":
+                return "./static/bug.png"
+            default:
+                return ""
+        }
+    }
 }

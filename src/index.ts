@@ -11,6 +11,7 @@ import {
 } from "matter-js"
 
 import getTexture from "./getTexture"
+import { MyBody } from "../defs";
 
 const GITHUB_EVENTS_URL = "https://api.github.com/events"
 const EVENT_FETCH_INTERVALL_TIME = 60 * 1000
@@ -18,13 +19,13 @@ const events = []
 
 let repo = ""
 
-export default container => {
+export default (container: HTMLCanvasElement) => {
     // create an engine
     const engine = Engine.create()
-    engine.world.gravity = { x: 0, y: 0.01 }
+    engine.world.gravity = { x: 0, y: 0.01, scale: 1 }
 
     // create a runner
-    const runner = Runner.create()
+    const runner = Runner.create({})
 
     //run the engine
     Runner.run(runner, engine)
@@ -51,6 +52,7 @@ export default container => {
         isStatic: true,
         label: "ground",
         collisionFilter: {
+            group: 0,
             category: 1,
             mask: 2
         }
@@ -60,6 +62,7 @@ export default container => {
         isStatic: true,
         label: "ground",
         collisionFilter: {
+            group: 0,
             category: 1,
             mask: 2
         }
@@ -69,6 +72,7 @@ export default container => {
         isStatic: true,
         label: "ground",
         collisionFilter: {
+            group: 0,
             category: 1,
             mask: 2
         }
@@ -77,8 +81,9 @@ export default container => {
     World.add(engine.world, [ground, wallLeft, wallRight])
     
     const mouseConstraint = MouseConstraint.create(engine, {
-        element: container,
+        // element: container,
         collisionFilter: {
+            group: 0,
             category: 3,
             mask: 0
         }
@@ -115,19 +120,22 @@ export default container => {
 
         const event = events.shift()
 
-        const box = Bodies.circle(xPos, ground.position.y - 30, 11, {
+        const box: MyBody = Bodies.circle(xPos, ground.position.y - 30, 11, {
             torque: Math.random() * 6 - 3,
             frictionAir: 0,
             force: { x, y },
             density: 1,
-            label: "box",
+            label: "icon",
             collisionFilter: {
+                group: 0,
                 category: 2,
                 mask: 1
             },
             render: {
                 sprite: {
-                    texture: getTexture(event)
+                    texture: getTexture(event),
+                    xScale: 1,
+                    yScale: 1
                 }
             }
         })
@@ -140,7 +148,7 @@ export default container => {
     function onEventGroundCollision({ pairs }) {
         for(const { bodyA, bodyB } of pairs){
             if (bodyA.label === "ground" || bodyB.label === "ground") {
-                if (bodyA.label === "box") {
+                if (bodyA.label === "icon") {
                     World.remove(engine.world, bodyA, true)
                     console.log("removed!")
                 } else {
@@ -152,12 +160,12 @@ export default container => {
     }
 
     function onEventClicked({ mouse }) {
-        const body = Query.point(engine.world.bodies, mouse.mousedownPosition)[0];
+        const body: MyBody = Query.point(engine.world.bodies, mouse.mousedownPosition)[0];
         const index = engine.world.bodies.indexOf(body);
         const remove = engine.world.bodies.concat();
         remove.splice(index, 1);
         if (body) {
-            World.remove(engine.world, remove)
+            World.remove(engine.world, remove[0])
             Body.setStatic(body, !body.isStatic)
             if(body.isStatic){
                 repo = body.event.repo.url + "/events"

@@ -22,5 +22,11 @@
     "octicons": "^8.5.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
+  },
+  "devDependencies": {
+    "@types/matter-js": "^0.10.2",
+    "@types/node": "^12.6.8",
+    "@types/react": "^16.8.23",
+    "typescript": "^3.5.3"
   }
 }

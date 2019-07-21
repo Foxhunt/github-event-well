@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "GitHubCodeSource",
+    "name": "github-event-well",
     "builds": [
         {
             "src": "package.json",

@@ -76,7 +76,7 @@ export default function Icon({ event, remove, icon }: Props) {
 }
 
 function spawnBody(background: HTMLDivElement) {
-    const fan = 90
+    const fan = 10
     const speed = 2 + Math.random()
 
     const angle = (180 + fan / 2 - Math.random() * fan) * Math.PI / 180

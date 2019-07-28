@@ -58,10 +58,15 @@ export default function Icon({ event, remove, icon }: Props) {
         }
     }, [engine, body, remove, background])
 
+    const [over, setOver] = useState(false)
+
     return <>
         <img
             onMouseOver={() => {
-                console.log(event)
+                setOver(true)
+            }}
+            onMouseOut={() => {
+                setOver(false)
             }}
             src={icon}
             style={{
@@ -70,20 +75,21 @@ export default function Icon({ event, remove, icon }: Props) {
                         translateX(${x}px)
                         translateY(${y}px)
                         rotate(${angle}deg)
-                    `
+                `,
+                backgroundColor: over ? "green" : ""
             }} />
     </>
 }
 
 function spawnBody(background: HTMLDivElement) {
     const fan = 10
-    const speed = 2 + Math.random()
+    const speed = 2.2 + Math.random()
 
     const angle = (180 + fan / 2 - Math.random() * fan) * Math.PI / 180
     const x = Math.sin(angle) * speed
     const y = Math.cos(angle) * speed
 
-    const spread = 20
+    const spread = 15
     const xPos = background.clientWidth / spread + (background.clientWidth / spread) * (spread - 2) * Math.random()
 
     const icon = Bodies.circle(
@@ -91,7 +97,7 @@ function spawnBody(background: HTMLDivElement) {
         background.clientHeight,
         11,
         {
-            torque: Math.random() * 10 - 3,
+            torque: Math.random() * 10 - 5,
             frictionAir: 0,
             force: { x, y },
             density: 1,

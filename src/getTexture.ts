@@ -22,6 +22,6 @@ export default function(event) {
         case "ReleaseEvent":
                 return "./static/tag.png"
         default:
-            return ""
+            return "./static/tag.png"
     }
 }

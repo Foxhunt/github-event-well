@@ -27,13 +27,13 @@ export default function useGithubEvents(): [any, Dispatch<SetStateAction<any[]>>
 
     const [events, setEvents] = useState([])
     useEffect(() => {
-        const fetchIntervall = setInterval(() => {
+        function shiftEvent() {
             const event = fetchedEvents.shift()
             setFetchedEvents(fetchedEvents => [...fetchedEvents])
-
             setEvents(events => [...events, event])
+        }
 
-        }, EVENT_FETCH_INTERVALL_TIME / 30)
+        const fetchIntervall = setInterval(shiftEvent, EVENT_FETCH_INTERVALL_TIME / 30)
 
         return () => {
             clearInterval(fetchIntervall)

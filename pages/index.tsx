@@ -4,7 +4,7 @@ import { Engine, Runner } from "matter-js"
 import { EngineContext } from "../src/engineContext"
 import { BackgroundContext } from "../src/backgroundContext"
 
-import Icon from "../components/icon"
+import Icon from "../components/Icon"
 import getTexture from "../src/getTexture"
 
 const GITHUB_EVENTS_URL = "https://api.github.com/events"

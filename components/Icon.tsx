@@ -1,13 +1,17 @@
 import { useContext, useEffect, useState, useReducer } from "react"
 import { World, Bodies, Events, Body } from "matter-js"
+import Octicon from "@primer/octicons-react"
 
 import { EngineContext } from "../src/engineContext"
 import { BackgroundContext } from "../src/backgroundContext"
+import getTexture from "../src/getTexture"
 
 type Props = {
     event?: any
     remove: () => void
-    icon: string
+    onPointerOver: () => void
+    onPointerOut: () => void
+    onPointerDown: () => void
 }
 
 const initialPosition = {
@@ -24,7 +28,13 @@ function positionReducer(state, body: Body) {
     }
 }
 
-export default function Icon({ event, remove, icon }: Props) {
+export default function Icon({
+    event,
+    remove,
+    onPointerOver,
+    onPointerOut,
+    onPointerDown
+}: Props) {
     const engine = useContext(EngineContext)
     const background: HTMLDivElement = useContext(BackgroundContext)
 
@@ -37,7 +47,6 @@ export default function Icon({ event, remove, icon }: Props) {
     }, [body, engine.world])
 
     const [{ x, y, angle }, dispatchBody] = useReducer(positionReducer, initialPosition)
-
     useEffect(() => {
         function updatePosition() {
             if (
@@ -58,27 +67,28 @@ export default function Icon({ event, remove, icon }: Props) {
         }
     }, [engine, body, remove, background])
 
-    const [over, setOver] = useState(false)
+    useEffect(() => {
+        fetch(event.actor.avatar_url)
+    }, [event.actor.avatar_url])
 
-    return <>
-        <img
-            onMouseOver={() => {
-                setOver(true)
-            }}
-            onMouseOut={() => {
-                setOver(false)
-            }}
-            src={icon}
-            style={{
-                position: "absolute",
-                transform: `
-                        translateX(${x}px)
-                        translateY(${y}px)
-                        rotate(${angle}deg)
-                `,
-                backgroundColor: over ? "green" : ""
-            }} />
-    </>
+    return <div
+        onPointerOver={onPointerOver}
+        onPointerOut={onPointerOut}
+        onPointerDown={onPointerDown}
+        style={{
+            width: "40px",
+            position: "absolute",
+            color: "white",
+            transform: `
+                    translateX(${x}px)
+                    translateY(${y}px)
+                    rotate(${angle}deg)
+            `
+        }} >
+        <Octicon
+            icon={getTexture(event)}
+            size="medium" />
+    </div>
 }
 
 function spawnBody(background: HTMLDivElement) {

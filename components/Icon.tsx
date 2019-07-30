@@ -1,12 +1,10 @@
-import { useContext, useEffect, useState, useReducer } from "react"
+import { useEffect, useState } from "react"
 import Octicon from "@primer/octicons-react"
 
 import { Body } from "matter-js"
 
 import useBody from "../src/useBody"
 import getIcon from "../src/getIcon"
-
-import { BackgroundContext } from "../src/backgroundContext"
 
 export default function Icon({
     event,
@@ -15,8 +13,6 @@ export default function Icon({
     selected
 }) {
     const body = useBody(remove)
-
-    const background: HTMLDivElement = useContext(BackgroundContext)
 
     const [hovered, setHoved] = useState(null)
 

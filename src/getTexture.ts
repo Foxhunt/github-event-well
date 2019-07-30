@@ -1,27 +1,29 @@
+import { getIconByName } from "@primer/octicons-react"
+
 export default function(event) {
     switch (event.type) {
         case "PullRequestEvent":
-            return "./static/git-pull-request.png"
+            return getIconByName("git-pull-request")
         case "PushEvent":
-            return "./static/repo-push.png"
+            return getIconByName("repo-push")
         case "CreateEvent":
-            return "./static/repo.png"
+            return getIconByName("repo")
         case "ForkEvent":
-            return "./static/repo-forked.png"
+            return getIconByName("repo-forked")
         case "DeleteEvent":
-            return "./static/trashcan.png"
+            return getIconByName("trashcan")
         case "PullRequestReviewCommentEvent":
         case "IssueCommentEvent":
-            return "./static/comment.png"
+            return getIconByName("comment")
         case "WatchEvent":
-            return "./static/eye.png"
+            return getIconByName("eye")
         case "IssuesEvent":
-            return "./static/bug.png"
+            return getIconByName("bug")
         case "GollumEvent":
-            return "./static/book.png"
+            return getIconByName("book")
         case "ReleaseEvent":
-                return "./static/tag.png"
+                return getIconByName("tag")
         default:
-            return "./static/tag.png"
+            return getIconByName("tag")
     }
 }

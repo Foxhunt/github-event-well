@@ -20,8 +20,6 @@ export default function Icon({
 
     const [hovered, setHoved] = useState(null)
 
-    const Icon = getIcon(event)
-
     useEffect(() => {
         if (selected) {
             Body.setStatic(body, selected)
@@ -58,8 +56,8 @@ export default function Icon({
             `
         }} >
         <Octicon
-            size={ "medium" } >
-            <Icon />
-        </Octicon>
+            icon={getIcon(event)}
+            size={ "medium" }/>
+                
     </div>
 }

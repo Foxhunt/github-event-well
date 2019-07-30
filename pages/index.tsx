@@ -15,27 +15,24 @@ export default function Index() {
 
     const backgroundRef = useRef()
 
-    const [hoveredEvent, setHoveredEvent] = useState(null)
+    const [selectedEvent, setSelectedEvent] = useState(null)
 
     return (
         <EngineContext.Provider value={engine}>
             <BackgroundContext.Provider value={backgroundRef.current}>
                 <div
                     ref={backgroundRef}
-                    className={"background"}>
+                    className={"background"}
+                    onPointerDownCapture={() => {
+                        setSelectedEvent(null)
+                    }}>
                     {
                         events.map(event =>
                             <Icon
                                 key={event.id}
                                 event={event}
-                                onPointerOver={() => {
-                                    setHoveredEvent(event)
-                                }}
-                                onPointerOut={() => {
-                                    setHoveredEvent(null)
-                                }}
                                 onPointerDown={() => {
-                                    console.log(event)
+                                    setSelectedEvent(event)
                                 }}
                                 remove={() => {
                                     setEvents(events => {
@@ -45,9 +42,9 @@ export default function Index() {
                                 }} />
                         )
                     }
-                    <UserCard
-                        event={hoveredEvent} />
                 </div>
+                <UserCard
+                        event={selectedEvent} />
                 <style jsx global>{`
                     .background {
                         position: relative;

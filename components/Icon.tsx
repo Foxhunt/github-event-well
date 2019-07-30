@@ -7,8 +7,6 @@ import getTexture from "../src/getTexture"
 type Props = {
     event?: any
     remove: () => void
-    onPointerOver: () => void
-    onPointerOut: () => void
     onPointerDown: () => void
 }
 
@@ -21,8 +19,6 @@ const initialPosition = {
 export default function Icon({
     event,
     remove,
-    onPointerOver,
-    onPointerOut,
     onPointerDown
 }: Props) {
     const { x, y, angle } = useMatter(initialPosition, remove)
@@ -31,14 +27,20 @@ export default function Icon({
         fetch(event.actor.avatar_url)
     }, [event.actor.avatar_url])
 
+    const [hovered, setHoved] = useState(false)
+
     return <div
-        onPointerOver={onPointerOver}
-        onPointerOut={onPointerOut}
+        onPointerOver={()=> {
+            setHoved(true)
+        }}
+        onPointerOut={()=> {
+            setHoved(false)
+        }}
         onPointerDown={onPointerDown}
         style={{
             width: "40px",
             position: "absolute",
-            color: "white",
+            color: hovered ? "orange" : "white",
             transform: `
                     translateX(${x}px)
                     translateY(${y}px)

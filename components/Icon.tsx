@@ -1,13 +1,18 @@
 import { useContext, useEffect, useState, useReducer } from "react"
 import Octicon from "@primer/octicons-react"
 
-import useMatter from "../src/useMatter"
-import getTexture from "../src/getTexture"
+import { Body } from "matter-js"
+
+import useBody from "../src/useBody"
+import getIcon from "../src/getIcon"
+
+import { BackgroundContext } from "../src/backgroundContext"
 
 type Props = {
     event?: any
     remove: () => void
     onPointerDown: () => void
+    selected: boolean
 }
 
 const initialPosition = {
@@ -19,15 +24,28 @@ const initialPosition = {
 export default function Icon({
     event,
     remove,
-    onPointerDown
+    onPointerDown,
+    selected
 }: Props) {
-    const { x, y, angle } = useMatter(initialPosition, remove)
+    const body = useBody(remove)
+
+    const background: HTMLDivElement = useContext(BackgroundContext)
+
+    const [hovered, setHoved] = useState(false)
+
+    const Icon = getIcon(event)
+
+    useEffect(() => {
+        if (selected) {
+            Body.setStatic(body, selected)
+        } else {
+            Body.setStatic(body, selected)
+        }
+    }, [selected, body])
 
     useEffect(() => {
         fetch(event.actor.avatar_url)
     }, [event.actor.avatar_url])
-
-    const [hovered, setHoved] = useState(false)
 
     return <div
         onPointerOver={()=> {
@@ -38,17 +56,17 @@ export default function Icon({
         }}
         onPointerDown={onPointerDown}
         style={{
-            width: "40px",
             position: "absolute",
-            color: hovered ? "orange" : "white",
+            color: (selected || hovered) ? "orange" : "white",
             transform: `
-                    translateX(${x}px)
-                    translateY(${y}px)
-                    rotate(${angle}deg)
+                    translateX(${body.position.x}px)
+                    translateY(${body.position.y}px)
+                    rotate(${body.angle}deg)
             `
         }} >
         <Octicon
-            icon={getTexture(event)}
-            size="medium" />
+            size={ "medium" } >
+            <Icon />
+        </Octicon>
     </div>
 }

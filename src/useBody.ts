@@ -4,7 +4,7 @@ import { World, Events, Bodies } from "matter-js"
 import { EngineContext } from "./engineContext"
 import { BackgroundContext } from "./backgroundContext"
 
-export default function useMatter(initialPosition, remove) {
+export default function UseBody(remove) {
     const engine = useContext(EngineContext)
     const background: HTMLDivElement = useContext(BackgroundContext)
 
@@ -16,7 +16,7 @@ export default function useMatter(initialPosition, remove) {
         }
     }, [body, engine.world])
 
-    const [transform, setTransform] = useState(initialPosition)
+    const [, setChanged] = useState(false)
     useEffect(() => {
         function updatePosition() {
             if (
@@ -26,11 +26,7 @@ export default function useMatter(initialPosition, remove) {
             ) {
                 remove()
             } else {
-                setTransform(() => ({
-                    x: body.position.x,
-                    y: body.position.y,
-                    angle: body.angle
-                }))
+                setChanged(changed => !changed)
             }
         }
 
@@ -41,7 +37,7 @@ export default function useMatter(initialPosition, remove) {
         }
     }, [engine, body, remove, background])
 
-    return transform
+    return body
 }
 
 function spawnBody(background: HTMLDivElement) {

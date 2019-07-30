@@ -1,4 +1,5 @@
 import { useRef, useState } from "react"
+import Head from "next/head"
 
 import { EngineContext } from "../src/engineContext"
 import { BackgroundContext } from "../src/backgroundContext"
@@ -18,7 +19,13 @@ export default function Index() {
     const [selectedEvent, setSelectedEvent] = useState(null)
     const [userCardPosition, setUserCardPosition] = useState(null)
 
-    return (
+    return <>
+        <Head>
+            <title>GitHub Events</title>
+            <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"/>
+        </Head>
         <EngineContext.Provider value={engine}>
             <BackgroundContext.Provider value={backgroundRef.current}>
                 <div
@@ -61,7 +68,12 @@ export default function Index() {
                         background-color: grey;
                     }
                 `}</style>
+                <style jsx global>{`
+                    html {
+                        user-select: none;
+                    }
+                `}</style>
             </BackgroundContext.Provider>
         </EngineContext.Provider>
-    )
+    </>
 }

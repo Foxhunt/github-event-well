@@ -8,30 +8,17 @@ import getIcon from "../src/getIcon"
 
 import { BackgroundContext } from "../src/backgroundContext"
 
-type Props = {
-    event?: any
-    remove: () => void
-    onPointerDown: () => void
-    selected: boolean
-}
-
-const initialPosition = {
-    x: -50,
-    y: -50,
-    angle: 0
-}
-
 export default function Icon({
     event,
     remove,
-    onPointerDown,
+    selectEvent,
     selected
-}: Props) {
+}) {
     const body = useBody(remove)
 
     const background: HTMLDivElement = useContext(BackgroundContext)
 
-    const [hovered, setHoved] = useState(false)
+    const [hovered, setHoved] = useState(null)
 
     const Icon = getIcon(event)
 
@@ -39,6 +26,12 @@ export default function Icon({
         if (selected) {
             Body.setStatic(body, selected)
         } else {
+            if (body.isStatic){
+                const x = Math.sin(Math.PI * 2 * Math.random()) * 3
+                const y = Math.cos(Math.PI * 2 * Math.random()) * 3
+                Body.setVelocity(body, {x, y})
+                Body.setAngularVelocity(body, Math.random() * 4 - 2)
+            }
             Body.setStatic(body, selected)
         }
     }, [selected, body])
@@ -54,7 +47,7 @@ export default function Icon({
         onPointerOut={()=> {
             setHoved(false)
         }}
-        onPointerDown={onPointerDown}
+        onPointerDown={() => selectEvent(body.position)}
         style={{
             position: "absolute",
             color: (selected || hovered) ? "orange" : "white",

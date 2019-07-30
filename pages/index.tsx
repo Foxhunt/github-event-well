@@ -16,6 +16,7 @@ export default function Index() {
     const backgroundRef = useRef()
 
     const [selectedEvent, setSelectedEvent] = useState(null)
+    const [userCardPosition, setUserCardPosition] = useState(null)
 
     return (
         <EngineContext.Provider value={engine}>
@@ -31,8 +32,10 @@ export default function Index() {
                             <Icon
                                 key={event.id}
                                 event={event}
-                                onPointerDown={() => {
+                                selected={ event === selectedEvent}
+                                selectEvent={ position => {
                                     setSelectedEvent(event)
+                                    setUserCardPosition(position)
                                 }}
                                 remove={() => {
                                     setEvents(events => {
@@ -42,10 +45,11 @@ export default function Index() {
                                 }} />
                         )
                     }
+                    <UserCard
+                            position={userCardPosition}
+                            event={selectedEvent} />
                 </div>
-                <UserCard
-                        event={selectedEvent} />
-                <style jsx global>{`
+                <style jsx>{`
                     .background {
                         position: relative;
                         overflow: hidden;

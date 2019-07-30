@@ -18,7 +18,7 @@
   "homepage": "https://github.com/Foxhunt/github-event-well#readme",
   "dependencies": {
     "@primer/octicons-react": "^9.1.1",
-    "framer-motion": "^1.4.0",
+    "framer-motion": "^1.4.1",
     "matter-js": "^0.14.2",
     "next": "^9.0.2",
     "react": "^16.8.6",

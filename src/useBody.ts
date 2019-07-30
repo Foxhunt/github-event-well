@@ -42,7 +42,7 @@ export default function UseBody(remove) {
 
 function spawnBody(background: HTMLDivElement) {
     const fan = 10
-    const speed = 2.2 + Math.random()
+    const speed = 5 + Math.random()
 
     const angle = (180 + fan / 2 - Math.random() * fan) * Math.PI / 180
     const x = Math.sin(angle) * speed
@@ -54,7 +54,7 @@ function spawnBody(background: HTMLDivElement) {
     const icon = Bodies.circle(
         xPos,
         background.clientHeight,
-        11,
+        15,
         {
             torque: Math.random() * 10 - 5,
             frictionAir: 0,
@@ -64,7 +64,7 @@ function spawnBody(background: HTMLDivElement) {
             collisionFilter: {
                 group: 0,
                 category: 2,
-                mask: 1
+                mask: 2
             }
         })
 

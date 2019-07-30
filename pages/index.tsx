@@ -26,6 +26,9 @@ export default function Index() {
                     className={"background"}
                     onPointerDownCapture={() => {
                         setSelectedEvent(null)
+                    }}
+                    onTouchStartCapture={() => {
+                        setSelectedEvent(null)
                     }}>
                     {
                         events.map(event =>

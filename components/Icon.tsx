@@ -45,7 +45,12 @@ export default function Icon({
         onPointerOut={()=> {
             setHoved(false)
         }}
-        onPointerDown={() => selectEvent(body.position)}
+        onPointerDown={() => {
+            selectEvent(body.position)
+        }}
+        onTouchStart={() => {
+            selectEvent(body.position)
+        }}
         style={{
             position: "absolute",
             color: (selected || hovered) ? "orange" : "white",

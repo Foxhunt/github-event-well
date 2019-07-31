@@ -1,6 +1,8 @@
 import { useContext, useState, useEffect } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 
+import Link from "next/link"
+
 import { BackgroundContext } from "../src/backgroundContext"
 
 export default function UserCard({ event, position }) {
@@ -18,7 +20,7 @@ export default function UserCard({ event, position }) {
     const height = 40
 
     useEffect(() => {
-        if (position) {
+        if (position && background) {
             if (position.x + width < background.clientWidth) {
                 setAnimate(animate => ({
                     ...animate,
@@ -43,7 +45,7 @@ export default function UserCard({ event, position }) {
                 }))
             }
         }
-    }, [position, background])
+    }, [position, position.x, position.y, background])
 
     return <>
         <AnimatePresence>
@@ -51,32 +53,43 @@ export default function UserCard({ event, position }) {
                 event &&
                 <motion.div
                     style={{
-                        position: "relative",
-                        backgroundColor: "#18181D",
+                        position: "absolute",
+                        backgroundColor: "#000000",
                         borderRadius: 20,
-                        height: 40
+                        height: 40,
+                        width: 40
                     }}
                     initial={{
                         x: background.clientWidth * Math.random(),
                         y: background.clientHeight * Math.random(),
-                        width: 0,
+                        width: 40,
                         opacity: 0
                     }}
                     animate={animate}
                     exit={{
                         x: background.clientWidth * Math.random(),
                         y: background.clientHeight * Math.random(),
-                        width: 0,
+                        width: 40,
                         opacity: 0
                     }}
                     transition={{
                         type: "spring",
+                        damping: 20,
+                        mass: 1,
                         stiffness: 200,
-                        damping: 20
+                        velocity: 2
                     }}>
                     <img
+                        onClick={() => {
+                            event && window.open(`https://github.com/${event.actor.login}`)
+                        }}
                         src={event.actor.avatar_url} />
-                    <div>{event.repo.name}</div>
+                    <div
+                        onClick={() => {
+                            event && window.open(`https://github.com/${event.repo.name}`)
+                        }}>{
+                            event.repo.name
+                    }</div>
                 </motion.div>
             }
         </AnimatePresence>
@@ -87,6 +100,8 @@ export default function UserCard({ event, position }) {
                 height: 100%;
 
                 border-radius: 50%;
+                
+                pointer-events: all;
             }
             div {
                 padding-left: 5px;
@@ -108,6 +123,8 @@ export default function UserCard({ event, position }) {
                 text-overflow: ellipsis;
 
                 color: #FFFFFF;
+                
+                pointer-events: all;
             }
         `}</style>
     </>

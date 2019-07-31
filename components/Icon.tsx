@@ -14,17 +14,17 @@ export default function Icon({
 }) {
     const body = useBody(remove)
 
-    const [hovered, setHoved] = useState(null)
-
     useEffect(() => {
         if (selected) {
             Body.setStatic(body, selected)
         } else {
             if (body.isStatic){
-                const x = Math.sin(Math.PI * 2 * Math.random()) * 3
-                const y = Math.cos(Math.PI * 2 * Math.random()) * 3
+                const fan = 90
+                const angle = (180 + fan / 2 - Math.random() * fan) * Math.PI / 180
+                const x = Math.sin(angle) * 3
+                const y = Math.cos(angle) * 3
                 Body.setVelocity(body, {x, y})
-                Body.setAngularVelocity(body, Math.random() * 4 - 2)
+                Body.setAngularVelocity(body, 4 + 1 * (Math.random() * 2 - 1))
             }
             Body.setStatic(body, selected)
         }
@@ -35,21 +35,12 @@ export default function Icon({
     }, [event.actor.avatar_url])
 
     return <div
-        onPointerOver={()=> {
-            setHoved(true)
-        }}
-        onPointerOut={()=> {
-            setHoved(false)
-        }}
-        onPointerDown={() => {
-            selectEvent(body.position)
-        }}
-        onTouchStart={() => {
+        onClick={() => {
             selectEvent(body.position)
         }}
         style={{
             position: "absolute",
-            color: (selected || hovered) ? "orange" : "white",
+            color: selected ? "white" : "#696969",
             transform: `
                     translateX(${body.position.x}px)
                     translateY(${body.position.y}px)
@@ -59,6 +50,10 @@ export default function Icon({
         <Octicon
             icon={getIcon(event)}
             size={ "medium" }/>
-                
+        <style jsx>{`
+            div {
+                padding: 4px;
+            }
+        `}</style>
     </div>
 }

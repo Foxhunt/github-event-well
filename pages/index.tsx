@@ -17,7 +17,7 @@ export default function Index() {
     const backgroundRef = useRef()
 
     const [selectedEvent, setSelectedEvent] = useState(null)
-    const [userCardPosition, setUserCardPosition] = useState(null)
+    const [userCardPosition, setUserCardPosition] = useState({x: 0, y: 0})
 
     return <>
         <Head>
@@ -31,11 +31,10 @@ export default function Index() {
                 <div
                     ref={backgroundRef}
                     className={"background"}
-                    onPointerDownCapture={() => {
-                        setSelectedEvent(null)
-                    }}
-                    onTouchStartCapture={() => {
-                        setSelectedEvent(null)
+                    onClickCapture={event => {
+                        if(event.target === backgroundRef.current){
+                            setSelectedEvent(null)
+                        }
                     }}>
                     {
                         events.map(event =>
@@ -44,8 +43,8 @@ export default function Index() {
                                 event={event}
                                 selected={ event === selectedEvent}
                                 selectEvent={ position => {
-                                    setSelectedEvent(event)
                                     setUserCardPosition(position)
+                                    setSelectedEvent(event)
                                 }}
                                 remove={() => {
                                     setEvents(events => {
@@ -55,6 +54,9 @@ export default function Index() {
                                 }} />
                         )
                     }
+                </div>
+                <div
+                    className={"uiLayer"}>
                     <UserCard
                             position={userCardPosition}
                             event={selectedEvent} />
@@ -65,7 +67,15 @@ export default function Index() {
                         overflow: hidden;
                         width: calc(100vw - 16px);
                         height: calc(100vh - 16px);
-                        background-color: grey;
+                        background-color: #272727;
+                    }
+                    .uiLayer {
+                        pointer-events: none;
+                        position: absolute;
+                        top: 8px;
+                        overflow: hidden;
+                        width: calc(100vw - 16px);
+                        height: calc(100vh - 16px);
                     }
                 `}</style>
                 <style jsx global>{`

@@ -20,9 +20,9 @@ export default function UseBody(remove) {
     useEffect(() => {
         function updatePosition() {
             if (
-                body.position.y > background.clientHeight + 100 ||
-                body.position.x > background.clientWidth + 100 ||
-                body.position.x < -100
+                body.position.y > background.clientHeight ||
+                body.position.x > background.clientWidth + 40 ||
+                body.position.x < - 40
             ) {
                 remove()
             } else {
@@ -42,7 +42,7 @@ export default function UseBody(remove) {
 
 function spawnBody(background: HTMLDivElement) {
     const fan = 10
-    const speed = 5 + Math.random()
+    const speed = Math.sqrt(2 * 0.00008 * background.clientHeight) * 15
 
     const angle = (180 + fan / 2 - Math.random() * fan) * Math.PI / 180
     const x = Math.sin(angle) * speed
@@ -56,7 +56,7 @@ function spawnBody(background: HTMLDivElement) {
         background.clientHeight,
         15,
         {
-            torque: Math.random() * 10 - 5,
+            torque: Math.random() * 500 - 250,
             frictionAir: 0,
             force: { x, y },
             density: 1,

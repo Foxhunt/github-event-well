@@ -1,20 +1,14 @@
 import { useContext, useState, useEffect } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 
-import Link from "next/link"
-
 import { BackgroundContext } from "../src/backgroundContext"
 
 export default function UserCard({ event, position }) {
 
     const background = useContext(BackgroundContext)
 
-    const [animate, setAnimate] = useState({
-        x: 0,
-        y: 0,
-        width: 180,
-        opacity: 1
-    })
+    const [x, setX] = useState(0)
+    const [y, setY] = useState(0)
 
     const width = 180
     const height = 40
@@ -22,27 +16,15 @@ export default function UserCard({ event, position }) {
     useEffect(() => {
         if (position && background) {
             if (position.x + width < background.clientWidth) {
-                setAnimate(animate => ({
-                    ...animate,
-                    x: position.x,
-                }))
+                setX(position.x)
             } else {
-                setAnimate(animate => ({
-                    ...animate,
-                    x: position.x - 148,
-                }))
+                setX(position.x - 148)
             }
 
             if (position.y + 32 + height < background.clientHeight) {
-                setAnimate(animate => ({
-                    ...animate,
-                    y: position.y + 32,
-                }))
+                setY(position.y + 32)
             } else {
-                setAnimate(animate => ({
-                    ...animate,
-                    y: position.y - 42,
-                }))
+                setY( position.y - 32)
             }
         }
     }, [position, position.x, position.y, background])
@@ -60,15 +42,20 @@ export default function UserCard({ event, position }) {
                         width: 40
                     }}
                     initial={{
-                        x: background.clientWidth * Math.random(),
-                        y: background.clientHeight * Math.random(),
+                        x,
+                        y,
                         width: 40,
                         opacity: 0
                     }}
-                    animate={animate}
+                    animate={{
+                        x,
+                        y,
+                        width: 180,
+                        opacity: 1
+                    }}
                     exit={{
-                        x: background.clientWidth * Math.random(),
-                        y: background.clientHeight * Math.random(),
+                        x,
+                        y,
                         width: 40,
                         opacity: 0
                     }}
@@ -112,10 +99,7 @@ export default function UserCard({ event, position }) {
                 font-style: normal;
                 font-weight: normal;
                 font-size: 10px;
-                line-height: 0px;
-                display: flex;
-                align-items: center;
-                text-align: center;
+                line-height: 40px;
                 text-transform: capitalize;
 
                 overflow: hidden;

@@ -4,7 +4,6 @@ const nextConfig = {
   target: 'serverless',
   transformManifest: manifest => ['/'].concat(manifest),
   workboxOpts: {
-    generateInDevMode: true,
     swDest: 'static/service-worker.js',
     runtimeCaching: [
       {

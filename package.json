@@ -21,6 +21,7 @@
     "framer-motion": "^1.4.1",
     "matter-js": "^0.14.2",
     "next": "^9.0.2",
+    "next-offline": "^4.0.3",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },

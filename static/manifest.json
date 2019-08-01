@@ -1,0 +1,21 @@
+{
+    "name": "GitHub Events",
+    "short_name": "GitHub Events",
+    "icons": [
+      {
+        "src": "/static/eye-192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/static/eye-512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "background_color": "#272727",
+    "description": "GitHub events in physical space",
+    "display": "fullscreen",
+    "start_url": "/",
+    "theme_color": "#000"
+  }

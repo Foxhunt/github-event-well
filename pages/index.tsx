@@ -25,6 +25,7 @@ export default function Index() {
             <meta
                 name="viewport"
                 content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"/>
+            <link rel="manifest" href="/static/manifest.json" />
         </Head>
         <EngineContext.Provider value={engine}>
             <BackgroundContext.Provider value={backgroundRef.current}>

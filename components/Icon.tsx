@@ -39,8 +39,6 @@ export default function Icon({
             selectEvent(body.position)
         }}
         style={{
-            position: "absolute",
-            color: selected ? "white" : "#696969",
             transform: `
                     translateX(${body.position.x}px)
                     translateY(${body.position.y}px)
@@ -52,7 +50,9 @@ export default function Icon({
             size={ "medium" }/>
         <style jsx>{`
             div {
+                position: absolute;
                 padding: 4px;
+                color: ${selected ? "white" : "#696969"};
             }
         `}</style>
     </div>

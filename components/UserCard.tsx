@@ -4,30 +4,36 @@ import { AnimatePresence, motion } from "framer-motion"
 import { BackgroundContext } from "../src/backgroundContext"
 
 export default function UserCard({ event, position }) {
-
     const background = useContext(BackgroundContext)
+
+    const [open, setOpen] = useState(false)
 
     const [x, setX] = useState(0)
     const [y, setY] = useState(0)
 
-    const width = 180
-    const height = 40
+    const width = 200
+    const height = open ? 125 : 40
 
     useEffect(() => {
         if (position && background) {
-            if (position.x + width < background.clientWidth) {
+            if (
+                position.x > 0 &&
+                position.x + width < background.clientWidth 
+            ) {
                 setX(position.x)
+            } else if (position.x < 0) {
+                setX(5)
             } else {
-                setX(position.x - 148)
+                setX(background.clientWidth - width - 5)
             }
 
             if (position.y + 32 + height < background.clientHeight) {
                 setY(position.y + 32)
             } else {
-                setY( position.y - 32)
+                setY( position.y - height)
             }
         }
-    }, [position, position.x, position.y, background])
+    }, [position, position.x, position.y, background, height])
 
     return <>
         <AnimatePresence>
@@ -35,11 +41,16 @@ export default function UserCard({ event, position }) {
                 event &&
                 <motion.div
                     style={{
-                        position: "absolute",
-                        backgroundColor: "#000000",
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        backdropFilter: "blur(1px)",
                         borderRadius: 20,
-                        height: 40,
-                        width: 40
+                        height,
+                        width: 40,
+                        display: "grid",
+                        gridTemplateColumns: "40px auto 20px",
+                        gridTemplateRows: "40px auto 40px",
+                        overflow: "hidden",
+                        pointerEvents: "all"
                     }}
                     initial={{
                         x,
@@ -50,13 +61,15 @@ export default function UserCard({ event, position }) {
                     animate={{
                         x,
                         y,
-                        width: 180,
+                        width,
+                        height,
                         opacity: 1
                     }}
                     exit={{
                         x,
                         y,
                         width: 40,
+                        height: 40,
                         opacity: 0
                     }}
                     transition={{
@@ -72,28 +85,40 @@ export default function UserCard({ event, position }) {
                         }}
                         src={event.actor.avatar_url} />
                     <div
+                        id="repo"
                         onClick={() => {
                             event && window.open(`https://github.com/${event.repo.name}`)
                         }}>{
-                            event.repo.name
+                        !open && event.repo.name
                     }</div>
+                    <div
+                        id="openCloseDetails"
+                        onClick={() => {
+                            setOpen(open => !open)
+                            console.log("open")
+                    }}/>
+                    <div
+                        id="details">
+                        repo: {event.repo.name} <br />
+                        actor: {event.actor.display_login} <br />
+                        time: {new Date(Date.parse(event.created_at)).toLocaleString()} <br />
+                        type: {event.type} <br />
+                    </div>
                 </motion.div>
             }
         </AnimatePresence>
         <style jsx>{`
             @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
             img {
-                float: left;
                 height: 100%;
-
+                margin: -2px;
+                border-style: solid;
+                border-width: 2px;
                 border-radius: 50%;
-                
-                pointer-events: all;
+                border-color: #272727;
             }
-            div {
+            div#repo {
                 padding-left: 5px;
-
-                height: 100%;
                 
                 font-family: "Roboto", sans-serif;
                 font-style: normal;
@@ -107,8 +132,28 @@ export default function UserCard({ event, position }) {
                 text-overflow: ellipsis;
 
                 color: #FFFFFF;
+            }
+            div#openCloseDetails {
+                background-color: #FFFFFF;
                 
-                pointer-events: all;
+                border-top-right-radius: 20px;
+                border-bottom-right-radius: 20px;
+            }
+            div#details {
+                grid-column: 1/-1;
+                grid-row: 2/-1;
+                color: #FFFFFF;
+
+                padding: 8px;
+                
+                font-family: "Roboto", sans-serif;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 14px;
+
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
             }
         `}</style>
     </>

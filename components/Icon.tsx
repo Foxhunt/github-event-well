@@ -42,7 +42,7 @@ export default function Icon({
 
     return <div
         onClick={() => {
-            selectEvent(body.position)
+            selectEvent({ ...body.position })
         }}
         style={{
             transform: `

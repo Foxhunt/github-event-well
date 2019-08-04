@@ -20,7 +20,8 @@ export default function Icon({
             constraint.current = Constraint.create({
                 pointA: { x: body.position.x, y:  body.position.y },
                 bodyB: body,
-                length: 0
+                stiffness: 0.006,
+                damping: 0.018
             })
             World.add(world, constraint.current)
         } else if (!selected && constraint.current) {

@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import Octicon from "@primer/octicons-react"
 
-import { Body } from "matter-js"
+import { Body, Constraint, World } from "matter-js"
 
 import useBody from "../src/useBody"
 import getIcon from "../src/getIcon"
@@ -12,23 +12,28 @@ export default function Icon({
     selectEvent,
     selected
 }) {
-    const body = useBody(remove)
+    const [body, world] = useBody(remove)
+    const constraint = useRef<Constraint>(null)
 
     useEffect(() => {
-        if (selected) {
-            Body.setStatic(body, selected)
-        } else {
-            if (body.isStatic){
-                const fan = 90
-                const angle = (180 + fan / 2 - Math.random() * fan) * Math.PI / 180
-                const x = Math.sin(angle) * 3
-                const y = Math.cos(angle) * 3
-                Body.setVelocity(body, {x, y})
-                Body.setAngularVelocity(body, 4 + 1 * (Math.random() * 2 - 1))
-            }
-            Body.setStatic(body, selected)
+        if (selected && !constraint.current) {
+            constraint.current = Constraint.create({
+                pointA: { x: body.position.x, y:  body.position.y },
+                bodyB: body,
+                length: 0
+            })
+            World.add(world, constraint.current)
+        } else if (!selected && constraint.current) {
+            World.remove(world, constraint.current, true)
+            constraint.current = null
+            const fan = 90
+            const angle = (180 + fan / 2 - Math.random() * fan) * Math.PI / 180
+            const x = Math.sin(angle) * 3
+            const y = Math.cos(angle) * 3
+            Body.setVelocity(body, {x, y})
+            Body.setAngularVelocity(body, 4 + 1 * (Math.random() * 2 - 1))
         }
-    }, [selected, body])
+    }, [selected, body, constraint, world])
 
     useEffect(() => {
         fetch(event.actor.avatar_url)

@@ -1,18 +1,19 @@
-import { useContext, useState, useEffect } from "react"
-import { World, Events, Bodies } from "matter-js"
+import { useContext, useState, useEffect, useRef } from "react"
+import { World, Events, Bodies, Body } from "matter-js"
 
 import { EngineContext } from "./engineContext"
 import { BackgroundContext } from "./backgroundContext"
 
-export default function UseBody(remove) {
+export default function UseBody(remove): [Body, World]{
     const engine = useContext(EngineContext)
     const background: HTMLDivElement = useContext(BackgroundContext)
 
-    const [body] = useState(spawnBody(background))
+    const body = useRef(spawnBody(background))
     useEffect(() => {
-        World.add(engine.world, body)
+        const currentBody = body.current
+        World.add(engine.world, currentBody)
         return () => {
-            World.remove(engine.world, body)
+            World.remove(engine.world, currentBody)
         }
     }, [body, engine.world])
 
@@ -20,9 +21,9 @@ export default function UseBody(remove) {
     useEffect(() => {
         function updatePosition() {
             if (
-                body.position.y > background.clientHeight ||
-                body.position.x > background.clientWidth + 40 ||
-                body.position.x < - 40
+                body.current.position.y > background.clientHeight ||
+                body.current.position.x > background.clientWidth + 40 ||
+                body.current.position.x < - 40
             ) {
                 remove()
             } else {
@@ -37,7 +38,7 @@ export default function UseBody(remove) {
         }
     }, [engine, body, remove, background])
 
-    return body
+    return [body.current, engine.world]
 }
 
 function spawnBody(background: HTMLDivElement) {

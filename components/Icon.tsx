@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useRef } from "react"
 import Octicon from "@primer/octicons-react"
 
 import { Body, Constraint, World } from "matter-js"

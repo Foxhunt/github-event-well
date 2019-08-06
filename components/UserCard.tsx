@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from "react"
 import { AnimatePresence, motion } from "framer-motion"
+import Octicon, { getIconByName } from "@primer/octicons-react"
 
 import { BackgroundContext } from "../src/backgroundContext"
 
@@ -91,12 +92,17 @@ export default function UserCard({ event, position }) {
                         }}>{
                         !open && event.repo.name
                     }</div>
+                    
                     <div
                         id="openCloseDetails"
                         onClick={() => {
                             setOpen(open => !open)
                             console.log("open")
-                    }}/>
+                    }}>
+                        <Octicon
+                        icon={getIconByName("search")}
+                        size={ "small" }/>
+                    </div>
                     <div
                         id="details">
                         repo: {event.repo.name} <br />
@@ -133,10 +139,8 @@ export default function UserCard({ event, position }) {
                 color: #FFFFFF;
             }
             div#openCloseDetails {
-                background-color: #FFFFFF;
-                
-                border-top-right-radius: 20px;
-                border-bottom-right-radius: 20px;
+                color: ${open ? "white" : "#696969"};
+                transform: translateY(10px);
             }
             div#details {
                 grid-column: 1/-1;

@@ -80,6 +80,7 @@ export default function Index() {
                     }
                 `}</style>
                 <style jsx global>{`
+                    @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
                     html {
                         user-select: none;
                     }

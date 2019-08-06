@@ -108,7 +108,6 @@ export default function UserCard({ event, position }) {
             }
         </AnimatePresence>
         <style jsx>{`
-            @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
             img {
                 height: 100%;
                 margin: -2px;

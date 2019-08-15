@@ -1,16 +1,17 @@
 const withOffline = require("next-offline")
 
 const nextConfig = {
-  target: 'serverless',
-  transformManifest: manifest => ['/'].concat(manifest),
+  target: "serverless",
+  transformManifest: manifest => ["/"].concat(manifest),
   workboxOpts: {
-    swDest: 'static/service-worker.js',
+    swDest: "static/service-worker.js",
+    exclude: [/service-worker\.js$/],
     runtimeCaching: [
       {
         urlPattern: /^https?.*/,
-        handler: 'NetworkFirst',
+        handler: "NetworkFirst",
         options: {
-          cacheName: 'https-calls',
+          cacheName: "https-calls",
           networkTimeoutSeconds: 15,
           expiration: {
             maxEntries: 150,

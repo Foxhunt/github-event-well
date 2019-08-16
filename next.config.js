@@ -5,9 +5,11 @@ const nextConfig = {
   transformManifest: manifest => ["/"].concat(manifest),
   workboxOpts: {
     swDest: "static/service-worker.js",
-    exclude: [/service-worker\.js$/],
     runtimeCaching: [
       {
+        urlPattern: /service-worker\.js$/,
+        handler: "NetworkOnly",
+      },{
         urlPattern: /^https?.*/,
         handler: "NetworkFirst",
         options: {

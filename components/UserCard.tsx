@@ -97,7 +97,6 @@ export default function UserCard({ event, position }) {
                         id="openCloseDetails"
                         onClick={() => {
                             setOpen(open => !open)
-                            console.log("open")
                     }}>
                         <Octicon
                         icon={getIconByName("search")}

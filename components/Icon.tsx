@@ -1,5 +1,7 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import Octicon from "@primer/octicons-react"
+
+import randomcolor from "randomcolor"
 
 import { Body, Constraint, World } from "matter-js"
 
@@ -14,6 +16,11 @@ export default function Icon({
 }) {
     const [body, world] = useBody(remove)
     const constraint = useRef<Constraint>(null)
+
+    const [color] = useState(randomcolor({
+        luminosity: "light",
+        hue: "monochrome"
+    }))
 
     useEffect(() => {
         if (selected && !constraint.current) {
@@ -58,7 +65,7 @@ export default function Icon({
             div {
                 position: absolute;
                 padding: 4px;
-                color: ${selected ? "white" : "#696969"};
+                color: ${selected ? "white" : color};
             }
         `}</style>
     </div>

@@ -90,7 +90,7 @@ export default function UserCard({ event, position }) {
                         onClick={() => {
                             event && window.open(`https://github.com/${event.repo.name}`)
                         }}>{
-                        !open && event.repo.name
+                        event.repo.name
                     }</div>
                     
                     <div
@@ -105,7 +105,6 @@ export default function UserCard({ event, position }) {
                     </div>
                     <div
                         id="details">
-                        repo: {event.repo.name} <br />
                         actor: {event.actor.display_login} <br />
                         time: {new Date(Date.parse(event.created_at)).toLocaleString()} <br />
                         type: {event.type} <br />

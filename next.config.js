@@ -1,8 +1,15 @@
 const withOffline = require("next-offline")
+const crypto = require("crypto");
 
 const nextConfig = {
   target: "serverless",
-  transformManifest: manifest => ["/"].concat(manifest),
+  transformManifest: manifest => {
+    console.log(manifest)
+    return [{
+      url: "/",
+      revision: crypto.createHash("md5").update(String(Date.now()), "utf8").digest("hex")
+    }].concat(manifest)
+},
   workboxOpts: {
     swDest: "static/service-worker.js",
     runtimeCaching: [

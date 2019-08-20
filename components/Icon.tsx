@@ -19,13 +19,13 @@ export default function Icon({
 
     const [color] = useState(randomcolor({
         luminosity: "light",
-        hue: "monochrome"
+        seed: Number(event.id) + event.actor.id + event.repo.id
     }))
 
     useEffect(() => {
         if (selected && !constraint.current) {
             constraint.current = Constraint.create({
-                pointA: { x: body.position.x, y:  body.position.y },
+                pointA: { x: body.position.x, y: body.position.y },
                 bodyB: body,
                 stiffness: 0.006,
                 damping: 0.018
@@ -38,7 +38,7 @@ export default function Icon({
             const angle = (180 + fan / 2 - Math.random() * fan) * Math.PI / 180
             const x = Math.sin(angle) * 3
             const y = Math.cos(angle) * 3
-            Body.setVelocity(body, {x, y})
+            Body.setVelocity(body, { x, y })
             Body.setAngularVelocity(body, 4 + 1 * (Math.random() * 2 - 1))
         }
     }, [selected, body, constraint, world])
@@ -60,12 +60,12 @@ export default function Icon({
         }} >
         <Octicon
             icon={getIcon(event)}
-            size={ "medium" }/>
+            size={"medium"} />
         <style jsx>{`
             div {
                 position: absolute;
                 padding: 4px;
-                color: ${selected ? "white" : color};
+                color: ${color};
             }
         `}</style>
     </div>

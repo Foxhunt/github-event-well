@@ -27,8 +27,8 @@ export default function Icon({
             constraint.current = Constraint.create({
                 pointA: { x: body.position.x, y: body.position.y },
                 bodyB: body,
-                stiffness: 0.006,
-                damping: 0.018
+                stiffness: 0.01,
+                damping: 0.02
             })
             World.add(world, constraint.current)
         } else if (!selected && constraint.current) {
@@ -52,6 +52,8 @@ export default function Icon({
             selectEvent({ ...body.position })
         }}
         style={{
+            position: "absolute",
+            color,
             transform: `
                     translateX(${body.position.x}px)
                     translateY(${body.position.y}px)
@@ -62,10 +64,6 @@ export default function Icon({
             icon={getIcon(event)}
             size={"medium"} />
         <style jsx>{`
-            div {
-                position: absolute;
-                color: ${color};
-            }
             div:after {
                 content:'';
                 position:absolute;

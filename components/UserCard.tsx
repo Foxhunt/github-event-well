@@ -19,7 +19,7 @@ export default function UserCard({ event, position }) {
         if (position && background) {
             if (
                 position.x > 0 &&
-                position.x + width < background.clientWidth 
+                position.x + width < background.clientWidth
             ) {
                 setX(position.x)
             } else if (position.x < 0) {
@@ -31,7 +31,7 @@ export default function UserCard({ event, position }) {
             if (position.y + 32 + height < background.clientHeight) {
                 setY(position.y + 32)
             } else {
-                setY( position.y - height)
+                setY(position.y - height)
             }
         }
     }, [position, position.x, position.y, background, height])
@@ -48,8 +48,8 @@ export default function UserCard({ event, position }) {
                         height,
                         width: 40,
                         display: "grid",
-                        gridTemplateColumns: "40px auto 20px",
-                        gridTemplateRows: "40px auto 40px",
+                        gridTemplateColumns: "40px auto 25px",
+                        gridTemplateRows: "40px auto",
                         overflow: "hidden",
                         pointerEvents: "all"
                     }}
@@ -90,17 +90,16 @@ export default function UserCard({ event, position }) {
                         onClick={() => {
                             event && window.open(`https://github.com/${event.repo.name}`)
                         }}>{
-                        event.repo.name
-                    }</div>
-                    
+                            event.repo.name
+                        }</div>
                     <div
                         id="openCloseDetails"
                         onClick={() => {
                             setOpen(open => !open)
-                    }}>
+                        }}>
                         <Octicon
-                        icon={getIconByName("search")}
-                        size={ "small" }/>
+                            icon={getIconByName(open ? "chevron-up" : "chevron-down")}
+                            size={"small"} />
                     </div>
                     <div
                         id="details">
@@ -120,7 +119,7 @@ export default function UserCard({ event, position }) {
                 border-radius: 50%;
                 border-color: #272727;
             }
-            div#repo {
+            #repo {
                 padding-left: 5px;
                 
                 font-family: "Roboto", sans-serif;
@@ -136,11 +135,13 @@ export default function UserCard({ event, position }) {
 
                 color: #FFFFFF;
             }
-            div#openCloseDetails {
+            #openCloseDetails {
                 color: ${open ? "white" : "#696969"};
-                transform: translateY(10px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
-            div#details {
+            #details {
                 grid-column: 1/-1;
                 grid-row: 2/-1;
                 color: #FFFFFF;

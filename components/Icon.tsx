@@ -64,8 +64,13 @@ export default function Icon({
         <style jsx>{`
             div {
                 position: absolute;
-                padding: 4px;
                 color: ${color};
+            }
+            div:after {
+                content:'';
+                position:absolute;
+                top:-10px; bottom:-10px; 
+                left:-15px; right:-15px; 
             }
         `}</style>
     </div>

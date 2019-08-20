@@ -48,10 +48,7 @@ export default function Index() {
                                     setSelectedEvent(event)
                                 }}
                                 remove={() => {
-                                    setEvents(events => {
-                                        events.splice(events.indexOf(event), 1)
-                                        return [...events]
-                                    })
+                                    setEvents(events => events.filter(e => e !== event))
                                 }} />
                         )
                     }

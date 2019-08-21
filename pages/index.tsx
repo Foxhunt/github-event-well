@@ -61,28 +61,30 @@ export default function Index() {
                 <div
                     className={"uiLayer"}>
                     <AnimatePresence>
-                        {selectedEvent && <UserCard
+                        <UserCard
                             key={"userCard"}
                             position={userCardPosition}
-                            event={selectedEvent} />}
-                        {tutorial && <motion.div
-                            key={"tutorial"}
-                            initial={{
-                                position: "absolute",
-                                bottom: "0px",
-                                width: "100vw",
-                                height: "20vh",
-                                textAlign: "center",
-                                opacity: 0,
-                            }}
-                            animate={{
-                                opacity: 1
-                            }}
-                            exit={{
-                                opacity: 0
-                            }}>{
-                                "tap an icon"
-                            }</motion.div>}
+                            event={selectedEvent} />
+                        {
+                            tutorial &&
+                            <motion.div
+                                key={"tutorial"}
+                                initial={{
+                                    position: "absolute",
+                                    bottom: "0px",
+                                    width: "100vw",
+                                    height: "20vh",
+                                    textAlign: "center",
+                                    opacity: 0,
+                                }}
+                                animate={{
+                                    opacity: 1
+                                }}
+                                exit={{
+                                    opacity: 0
+                                }}>{
+                                    "tap an icon"
+                                }</motion.div>}
                     </AnimatePresence>
                 </div>
                 <style jsx>{`

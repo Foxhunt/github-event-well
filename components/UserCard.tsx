@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import Octicon, { getIconByName } from "@primer/octicons-react"
 
 import { BackgroundContext } from "../src/backgroundContext"
@@ -9,8 +9,8 @@ export default function UserCard({ event, position }) {
 
     const [open, setOpen] = useState(false)
 
-    const [x, setX] = useState(Math.random() * background.clientWidth)
-    const [y, setY] = useState(Math.random() * background.clientHeight)
+    const [x, setX] = useState(0)
+    const [y, setY] = useState(0)
 
     const width = 200
     const height = open ? 125 : 40
@@ -37,75 +37,79 @@ export default function UserCard({ event, position }) {
     }, [position, position.x, position.y, background, height])
 
     return <>
-        <motion.div
-            style={{
-                position: "absolute",
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
-                backdropFilter: "blur(1px)",
-                borderRadius: 20,
-                height,
-                width: 40,
-                display: "grid",
-                gridTemplateColumns: "40px auto 25px",
-                gridTemplateRows: "40px auto",
-                overflow: "hidden",
-                pointerEvents: "all"
-            }}
-            initial={{
-                x,
-                y,
-                width: 40,
-                opacity: 0
-            }}
-            animate={{
-                x,
-                y,
-                width,
-                height,
-                opacity: 1
-            }}
-            exit={{
-                x,
-                y,
-                width: 40,
-                height: 40,
-                opacity: 0
-            }}
-            transition={{
-                type: "spring",
-                damping: 20,
-                mass: 1,
-                stiffness: 200,
-                velocity: 2
-            }}>
-            <img
-                onClick={() => {
-                    event && window.open(`https://github.com/${event.actor.login}`)
-                }}
-                src={event.actor.avatar_url} />
-            <div
-                id="repo"
-                onClick={() => {
-                    event && window.open(`https://github.com/${event.repo.name}`)
-                }}>{
-                    event.repo.name
-                }</div>
-            <div
-                id="openCloseDetails"
-                onClick={() => {
-                    setOpen(open => !open)
-                }}>
-                <Octicon
-                    icon={getIconByName(open ? "chevron-up" : "chevron-down")}
-                    size={"small"} />
-            </div>
-            <div
-                id="details">
-                actor: {event.actor.display_login} <br />
-                time: {new Date(Date.parse(event.created_at)).toLocaleString()} <br />
-                type: {event.type} <br />
-            </div>
-        </motion.div>
+        <AnimatePresence>
+            {
+                event &&
+                <motion.div
+                    style={{
+                        position: "absolute",
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        backdropFilter: "blur(1px)",
+                        borderRadius: 20,
+                        height,
+                        width: 40,
+                        display: "grid",
+                        gridTemplateColumns: "40px auto 25px",
+                        gridTemplateRows: "40px auto",
+                        overflow: "hidden",
+                        pointerEvents: "all"
+                    }}
+                    initial={{
+                        x,
+                        y,
+                        width: 40,
+                        opacity: 0
+                    }}
+                    animate={{
+                        x,
+                        y,
+                        width,
+                        height,
+                        opacity: 1
+                    }}
+                    exit={{
+                        x,
+                        y,
+                        width: 40,
+                        height: 40,
+                        opacity: 0
+                    }}
+                    transition={{
+                        type: "spring",
+                        damping: 20,
+                        mass: 1,
+                        stiffness: 200,
+                        velocity: 2
+                    }}>
+                    <img
+                        onClick={() => {
+                            event && window.open(`https://github.com/${event.actor.login}`)
+                        }}
+                        src={event.actor.avatar_url} />
+                    <div
+                        id="repo"
+                        onClick={() => {
+                            event && window.open(`https://github.com/${event.repo.name}`)
+                        }}>{
+                            event.repo.name
+                        }</div>
+                    <div
+                        id="openCloseDetails"
+                        onClick={() => {
+                            setOpen(open => !open)
+                        }}>
+                        <Octicon
+                            icon={getIconByName(open ? "chevron-up" : "chevron-down")}
+                            size={"small"} />
+                    </div>
+                    <div
+                        id="details">
+                        actor: {event.actor.display_login} <br />
+                        time: {new Date(Date.parse(event.created_at)).toLocaleString()} <br />
+                        type: {event.type} <br />
+                    </div>
+                </motion.div>}
+        </AnimatePresence>
         <style jsx>{`
             img {
                 height: 100%;

@@ -1,14 +1,16 @@
 import { useContext, useState, useEffect, useRef } from "react"
-import { World, Events, Bodies, Body } from "matter-js"
+import { World, Events, Bodies, Body, Engine } from "matter-js"
 
 import { EngineContext } from "./engineContext"
 import { BackgroundContext } from "./backgroundContext"
+
+let maxY = 0
 
 export default function UseBody(remove): [Body, World]{
     const engine = useContext(EngineContext)
     const background: HTMLDivElement = useContext(BackgroundContext)
 
-    const body = useRef(spawnBody(background))
+    const body = useRef(spawnBody(background, engine))
     useEffect(() => {
         const currentBody = body.current
         World.add(engine.world, currentBody)
@@ -29,6 +31,11 @@ export default function UseBody(remove): [Body, World]{
             } else {
                 setChanged(changed => !changed)
             }
+
+            if(body.current.position.y <= 0 && body.current.position.y <= maxY){
+                maxY = body.current.position.y
+                console.log("top!", maxY)
+            }
         }
 
         Events.on(engine, "afterUpdate", updatePosition)
@@ -41,25 +48,27 @@ export default function UseBody(remove): [Body, World]{
     return [body.current, engine.world]
 }
 
-function spawnBody(background: HTMLDivElement) {
+function spawnBody(background: HTMLDivElement, engine: Engine) {
     const fan = 10
-    const speed = Math.sqrt(2 * 0.00008 * background.clientHeight) * 15
 
-    const angle = (180 + fan / 2 - Math.random() * fan) * Math.PI / 180
-    const x = Math.sin(angle) * speed
-    const y = Math.cos(angle) * speed
+    const angle = -(90 + fan / 2 - Math.random() * fan) * Math.PI / 180
+
+    //const y = 
+    //const x = y / Math.tan(angle)
+
+    const vx = 0
+    const vy = -Math.sqrt(2 * engine.world.gravity.y * background.clientHeight)
 
     const spread = 15
     const xPos = background.clientWidth / spread + (background.clientWidth / spread) * (spread - 2) * Math.random()
 
     const icon = Bodies.circle(
-        xPos,
+        background.clientWidth / 2,
         background.clientHeight,
         15,
         {
             torque: Math.random() * 500 - 250,
             frictionAir: 0,
-            force: { x, y },
             density: 1,
             label: "icon",
             collisionFilter: {
@@ -68,6 +77,10 @@ function spawnBody(background: HTMLDivElement) {
                 mask: 2
             }
         })
+
+    Body.setVelocity(icon, { x: vx, y: vy })
+
+    //console.log("spawn!", vy)
 
     return icon
 }

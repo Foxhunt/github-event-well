@@ -9,7 +9,7 @@ export default function useEngine(){
 
     const [runner] = useState(Runner.create({}))
     useEffect(() => {
-        engine.world.gravity = { x: 0, y: 0.00002, scale: 0.5 }
+        engine.world.gravity = { x: 0, y: 100, scale: 0.001}
 
         Runner.run(runner, engine)
 

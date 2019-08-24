@@ -63,12 +63,30 @@ export default function Icon({
         <Octicon
             icon={getIcon(event)}
             size={"medium"} />
+        <div
+            id="details">
+            {event.type} <br />
+            on {event.repo.name} <br />
+            by {event.actor.display_login} <br />
+
+        </div>
         <style jsx>{`
             div:after {
                 content:'';
                 position:absolute;
                 top:-10px; bottom:-10px; 
                 left:-15px; right:-15px; 
+            }
+            #details {
+                width: 100px;
+                height: 100px;
+
+                padding: 8px;
+
+                font-size: 14px;
+
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         `}</style>
     </div>

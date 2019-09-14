@@ -2,6 +2,7 @@
   "name": "github-event-well",
   "version": "1.0.0",
   "description": "github-event-well",
+  "license": "MIT",
   "scripts": {
     "dev": "next",
     "build": "next build",

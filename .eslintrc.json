@@ -4,7 +4,15 @@
         "es6": true,
         "node": true
     },
+    "settings": {
+        "import/resolver": {
+          "node": {
+            "extensions": [".js", ".jsx", ".ts", ".tsx"]
+          }
+        }
+    },
     "extends": [
+        "artcom-react"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -25,6 +33,11 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "no-shadow": "off",
+        "react/react-in-jsx-scope" : "off",
+        "react/jsx-uses-vars": "warn",
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": "error",
         "require-jsdoc": "off",
         "linebreak-style": "off",
         "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks

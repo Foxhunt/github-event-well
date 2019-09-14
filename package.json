@@ -18,25 +18,27 @@
   "homepage": "https://github.com/Foxhunt/github-event-well#readme",
   "dependencies": {
     "@primer/octicons-react": "^9.1.1",
-    "framer-motion": "^1.6.2",
+    "framer-motion": "^1.6.7",
     "matter-js": "^0.14.2",
-    "next": "^9.0.3",
-    "next-offline": "^4.0.3",
+    "next": "^9.0.5",
+    "next-offline": "^4.0.5",
     "randomcolor": "^0.5.4",
     "react": "^16.9.0",
     "react-dom": "^16.9.0"
   },
   "devDependencies": {
     "@types/matter-js": "^0.10.2",
-    "@types/node": "^12.7.2",
+    "@types/node": "^12.7.5",
     "@types/randomcolor": "^0.5.3",
     "@types/react": "^16.9.2",
-    "@typescript-eslint/eslint-plugin": "^2.0.0",
-    "@typescript-eslint/parser": "^2.0.0",
-    "eslint": "^6.1.0",
-    "eslint-config-google": "^0.13.0",
+    "@typescript-eslint/eslint-plugin": "^2.2.0",
+    "@typescript-eslint/parser": "^2.2.0",
+    "eslint": "^6.4.0",
+    "eslint-config-artcom": "^0.10.1",
+    "eslint-config-artcom-react": "^0.5.2",
+    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-react": "^7.14.3",
-    "eslint-plugin-react-hooks": "^1.7.0",
-    "typescript": "^3.5.3"
+    "eslint-plugin-react-hooks": "^2.0.1",
+    "typescript": "^3.6.3"
   }
 }
